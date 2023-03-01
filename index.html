@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./style.css" />
+
+    <title>Document</title>
+  </head>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* / The Modal (background) / */
+    .modal {
+      display: none;
+      /* / Hidden by default / */
+      position: fixed;
+      /* / Stay in place / */
+      z-index: 1;
+      /* / Sit on top / */
+      padding-top: 100px;
+      /* / Location of the box / */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* / Full width / */
+      height: 100%;
+      /* / Full height / */
+      overflow: auto;
+      /* / Enable scroll if needed / */
+      background-color: rgb(0, 0, 0);
+      /* / Fallback color / */
+      background-color: rgba(0, 0, 0, 0.4);
+      /* / Black w/ opacity / */
+    }
+
+    /* / Modal Content / */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    /* / The Close Button / */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+
+  <!-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> -->
+  <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
+
+  <body>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Mr. Mike.</p>
+      </div>
+    </div>
+    <div class="document-editor">
+      <div class="document-editor__toolbar"></div>
+      <div class="document-editor__editable-container">
+        <div class="document-editor__editable">
+          <p></p>
+        </div>
+      </div>
+    </div>
+    <div class="context-menu">
+      <label for="title-input">Title:</label>
+      <input type="text" id="title-input" />
+
+      <label for="datatype-select">Data Type:</label>
+      <select id="datatype-select">
+        <option value="text">Text</option>
+        <option value="number">Number</option>
+        <option value="date">Date</option>
+        <option value="boolean">Boolean</option>
+      </select>
+
+      <button id="submit-button">Submit</button>
+    </div>
+    <script>
+      const contextMenu = document.querySelector(".context-menu");
+      const titleInput = document.querySelector("#title-input");
+      const datatypeSelect = document.querySelector("#datatype-select");
+      const submitButton = document.querySelector("#submit-button");
+
+      // Hide the context menu by default
+      contextMenu.style.display = "none";
+
+      CKEDITOR.ClassicEditor.create(
+        document.querySelector(".document-editor__editable"),
+
+        {
+          extraPlugins: [DisallowNestingTables],
+          // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+          toolbar: {
+            items: [
+              "exportPDF",
+              "exportWord",
+              "|",
+              "findAndReplace",
+              "selectAll",
+              "|",
+              "heading",
+              "|",
+              "bold",
+              "italic",
+              "strikethrough",
+              "underline",
+              "code",
+              "subscript",
+              "superscript",
+              "removeFormat",
+              "|",
+              "bulletedList",
+              "numberedList",
+              "todoList",
+              "|",
+              "outdent",
+              "indent",
+              "|",
+              "undo",
+              "redo",
+              "-",
+              "fontSize",
+              "fontFamily",
+              "fontColor",
+              "fontBackgroundColor",
+              "highlight",
+              "|",
+              "alignment",
+              "|",
+              "link",
+              "insertImage",
+              "blockQuote",
+              "insertTable",
+              "mediaEmbed",
+              "codeBlock",
+              "htmlEmbed",
+              "|",
+              "specialCharacters",
+              "horizontalLine",
+              "pageBreak",
+              "|",
+              "textPartLanguage",
+              "|",
+              "sourceEditing",
+            ],
+            shouldNotGroupWhenFull: true,
+          },
+          // Changing the language of the interface requires loading the language file using the <script> tag.
+          // language: 'es',
+          list: {
+            properties: {
+              styles: true,
+              startIndex: true,
+              reversed: true,
+            },
+          },
+          // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+          heading: {
+            options: [
+              {
+                model: "paragraph",
+                title: "Paragraph",
+                class: "ck-heading_paragraph",
+              },
+              {
+                model: "heading1",
+                view: "h1",
+                title: "Heading 1",
+                class: "ck-heading_heading1",
+              },
+              {
+                model: "multonion",
+                view: "multonion-tf",
+                title: "Multonion",
+                class: "ck-heading_heading1",
+              },
+              {
+                model: "heading2",
+                view: "h2",
+                title: "Heading 2",
+                class: "ck-heading_heading2",
+              },
+              {
+                model: "heading3",
+                view: "h3",
+                title: "Heading 3",
+                class: "ck-heading_heading3",
+              },
+              {
+                model: "heading4",
+                view: "h4",
+                title: "Heading 4",
+                class: "ck-heading_heading4",
+              },
+              {
+                model: "heading5",
+                view: "h5",
+                title: "Heading 5",
+                class: "ck-heading_heading5",
+              },
+              {
+                model: "heading6",
+                view: "h6",
+                title: "Heading 6",
+                class: "ck-heading_heading6",
+              },
+            ],
+            allow: [
+              {
+                name: "multonion",
+                attributes: true,
+                classes: true,
+                styles: true,
+              },
+            ],
+          },
+          // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+          placeholder: "Type here...",
+          // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+          fontFamily: {
+            options: [
+              "default",
+              "Arial, Helvetica, sans-serif",
+              "Courier New, Courier, monospace",
+              "Georgia, serif",
+              "Lucida Sans Unicode, Lucida Grande, sans-serif",
+              "Tahoma, Geneva, sans-serif",
+              "Times New Roman, Times, serif",
+              "Trebuchet MS, Helvetica, sans-serif",
+              "Verdana, Geneva, sans-serif",
+            ],
+            supportAllValues: true,
+          },
+          // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+          fontSize: {
+            options: [10, 12, "default", 16, 18, 20, 22],
+            supportAllValues: true,
+          },
+          // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+          // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+          htmlSupport: {
+            allow: [
+              {
+                name: /.*/,
+                attributes: true,
+                classes: true,
+                styles: true,
+              },
+            ],
+          },
+          // Be careful with enabling previews
+          // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+          htmlEmbed: {
+            showPreviews: true,
+          },
+          // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+          link: {
+            decorators: {
+              addTargetToExternalLinks: true,
+              defaultProtocol: "https://",
+              toggleDownloadable: {
+                mode: "manual",
+                label: "Downloadable",
+                attributes: {
+                  download: "file",
+                },
+              },
+            },
+          },
+          // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
+          mention: {
+            feeds: [
+              {
+                marker: "@",
+                feed: [
+                  "@apple",
+                  `@<div>hello</div>`,
+                  "@bears",
+                  "@brownie",
+                  "@cake",
+                  "@cake",
+                  "@candy",
+                  "@canes",
+                  "@chocolate",
+                  "@cookie",
+                  "@cotton",
+                  "@cream",
+                  "@cupcake",
+                  "@danish",
+                  "@donut",
+                  "@dragée",
+                  "@fruitcake",
+                  "@gingerbread",
+                  "@gummi",
+                  "@ice",
+                  "@jelly-o",
+                  "@liquorice",
+                  "@macaroon",
+                  "@marzipan",
+                  "@oat",
+                  "@pie",
+                  "@plum",
+                  "@pudding",
+                  "@sesame",
+                  "@snaps",
+                  "@soufflé",
+                  "@sugar",
+                  "@sweet",
+                  "@topping",
+                  "@wafer",
+                ],
+                minimumCharacters: 1,
+              },
+            ],
+          },
+          // The "super-build" contains more premium features that require additional configuration, disable them below.
+          // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+          removePlugins: [
+            // These two are commercial, but you can try them out without registering to a trial.
+            // 'ExportPdf',
+            // 'ExportWord',
+            "CKBox",
+            "CKFinder",
+            "EasyImage",
+            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+            // Storing images as Base64 is usually a very bad idea.
+            // Replace it on production website with other solutions:
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+            // 'Base64UploadAdapter',
+            "RealTimeCollaborativeComments",
+            "RealTimeCollaborativeTrackChanges",
+            "RealTimeCollaborativeRevisionHistory",
+            "PresenceList",
+            "Comments",
+            "TrackChanges",
+            "TrackChangesData",
+            "RevisionHistory",
+            "Pagination",
+            "WProofreader",
+            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+            // from a local file system (file://) - load this site via HTTP server if you enable MathType
+            "MathType",
+          ],
+        }
+      )
+        .then((editor) => {
+          const toolbarContainer = document.querySelector(
+            ".document-editor__toolbar"
+          );
+
+          const welldoneSpan = document.createElement("span");
+          welldoneSpan.style.backgroundColor = "blue";
+          welldoneSpan.style.color = "white";
+          welldoneSpan.innerText = "welldone";
+          toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+
+          window.editor = editor;
+          // Add listener for "/" symbol in the content being typed.
+
+          editor.keystrokes.set("Ctrl+A", (keyEvtData, cancel) => {
+            console.log("Ctrl+A has been pressed");
+            cancel();
+          });
+          editor.keystrokes.set("shift+3", (keyEvtData, cancel) => {
+            const docFrag = editor.model.change((writer) => {
+              const p1 = writer.createElement("multonion");
+              const docFrag = writer.createDocumentFragment();
+              writer.append(p1, docFrag);
+              //   writer.appendElement( 'paragraph', root );
+              writer.insertElement("paragraph", docFrag, "end");
+
+              return docFrag;
+            });
+
+            editor.model.insertContent(docFrag);
+            cancel();
+          });
+          editor.keystrokes.set("shift+2", (keyEvtData, cancel) => {
+            console.log("shift+2 has been pressed");
+
+            // Get the modal
+            var modal = document.getElementById("myModal");
+            modal.style.display = "block";
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+              modal.style.display = "none";
+              const model = editor.model;
+              const selection = model.document.selection;
+              const range = selection.getFirstRange();
+              if (range) {
+                model.change((writer) => {
+                  writer.insertText("welldone", range.start);
+                });
+              }
+            };
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+              if (event.target == modal) {
+                modal.style.display = "none";
+              }
+            };
+          });
+
+          // Handle the form submission
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+
+      function DisallowNestingTables(editor) {
+        // editor.model.schema.addChildCheck((context, childDefinition) => {
+        //   console.log("here...", childDefinition);
+        //   console.log("context...", Array.from(context.getNames()));
+        //   if (
+        //     childDefinition.name == "table" &&
+        //     Array.from(context.getNames()).includes("table")
+        //   ) {
+        //     return false;
+        //   }
+        // });
+        editor.model.document.on("change", (evt, data) => {
+          const tables = document.getElementsByClassName("table");
+          editor.model.change((writer) => {
+            const wrapper = writer.createElement("table", {
+              width: "300px",
+              height: "200px",
+              backgroundColor: "red",
+            });
+            Array.from(tables).map((it, i) => {
+              if (Array.from(it.children).length) {
+                Array.from(it.children)[1]["id"] = `hello${i}`;
+                Array.from(it.children)[1].setAttribute("data-id", `hello${i}`);
+                Array.from(it.children)[1].setAttribute(
+                  "data-name",
+                  `name${i}`
+                );
+              }
+
+              return it;
+            });
+          });
+        });
+      }
+
+      class MultonionTF extends HTMLElement {
+        connectedCallback() {
+          const id = Math.random().toString(36).substr(2, 9);
+          this.setAttribute("id", id);
+          console.log(`Element with id '${id}' connected.`);
+          //   const modal = document.getElementById("myModal");
+          //   modal.style.display = "block";
+        }
+
+        disconnectedCallback() {
+          const id = this.getAttribute("id");
+          console.log(`Element with id '${id}' disconnected.`);
+        }
+      }
+
+      customElements.define("multonion-tf", MultonionTF);
+    </script>
+  </body>
+</html>
