@@ -1058,7 +1058,7 @@
             },
             H = function () {
               var t = e("." + a.o.prefix + "table-resize-layers", a.$edBox),
-                l = t[0]?.getBoundingClientRect(),
+                l = Array.from(t).lenght && t[0]?.getBoundingClientRect(),
                 o = l?.top,
                 n = l?.left;
               e("." + a.o.prefix + "table-resize-vertical-handle", t).each(
