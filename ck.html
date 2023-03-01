@@ -18,6 +18,7 @@
       referrerpolicy="no-referrer"
     />
 
+    <link rel="stylesheet" href="./index.css" />
     <style>
       body {
         font-family: Arial, Helvetica, sans-serif;
@@ -190,25 +191,39 @@
 
       // Initialize the editor
       $(document).ready(function () {
-        $("#trumbowyg-demo").trumbowyg({
-          autogrow: true,
-          btns: [
-            ["viewHTML"],
-            ["undo", "redo"], // Only supported in Blink browsers
-            ["formatting"],
-            ["strong", "em", "del"],
-            ["superscript", "subscript"],
-            ["link"],
-            ["insertImage"],
-            ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull"],
-            ["table"],
-            ["tableCellBackgroundColor"],
-            [("unorderedList", "orderedList")],
-            ["horizontalRule"],
-            ["tableBorderColor"]["removeformat"],
-            ["fullscreen"],
-          ],
-        });
+        $("#trumbowyg-demo")
+          .trumbowyg({
+            autogrow: true,
+            btns: [
+              ["viewHTML"],
+              ["undo", "redo"], // Only supported in Blink browsers
+              ["formatting"],
+              ["strong", "em", "del"],
+              ["superscript", "subscript"],
+              ["link"],
+              ["insertImage"],
+              ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull"],
+              ["table"],
+              ["tableCellBackgroundColor"],
+              [("unorderedList", "orderedList")],
+              ["horizontalRule"],
+              ["tableBorderColor"]["removeformat"],
+              ["fullscreen"],
+            ],
+          })
+          .on("tbwchange", function (e) {
+            if (e.target.childNodes) {
+              [].forEach.call(e.target.childNodes, function (elm) {
+                if (elm.nodeName == "TABLE") {
+                 
+                  const parentNode = document.createElement("multonion-dt");
+                  parentNode.appendChild(elm)
+                  e.target.appendChild(parentNode)
+                  console.log(e.target.childNodes);
+                }
+              });
+            }
+          });
         // appendHelloTag();
       });
       //   $(window).on("load", function () {

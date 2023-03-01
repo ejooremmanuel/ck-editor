@@ -1,0 +1,20 @@
+.trumbowyg-editor > multonion-dt > table > tbody > tr > td {
+  border: 1px solid #333 !important;
+  width: 100px;
+  height: 25px;
+}
+.trumbowyg-editor > multonion-dt > table > thead > tr > th {
+  border: 1px solid #333 !important;
+  width: 100px;
+  height: 25px;
+}
+.trumbowyg-editor > table > tbody > tr > td {
+  border: 1px solid #333 !important;
+  width: 100px;
+  height: 25px;
+}
+.trumbowyg-editor > table > thead > tr > th {
+  border: 1px solid #333 !important;
+  width: 100px;
+  height: 25px;
+}
