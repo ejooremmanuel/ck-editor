@@ -18,3 +18,11 @@
   width: 100px;
   height: 25px;
 }
+
+.table__modal__btn {
+  background: #284;
+  padding: 3rem;
+  outline: none;
+  border: none;
+  color: #fff;
+}
