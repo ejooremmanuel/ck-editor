@@ -53,6 +53,9 @@ p:empty:not(:focus)::before {
   z-index: 1000;
   padding: 1rem;
   width: 300px;
+
+  top: 50%;
+  left: 50%;
   overflow: auto;
   box-shadow: 2px 2px 37px 16px rgba(0, 0, 0, 0.13);
   -webkit-box-shadow: 2px 2px 37px 16px rgba(0, 0, 0, 0.156);

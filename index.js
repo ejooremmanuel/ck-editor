@@ -12,10 +12,7 @@ const metaDataState = {
   type: "",
 };
 
-const metaDataList = {
-  title: "",
-  type: "",
-};
+let metaDataList = [];
 
 metaDataTitleInputField.value = "";
 
@@ -45,35 +42,35 @@ metaDataTypeInputField.addEventListener("change", (e) => {
   metaDataState.type = e.target.value;
 });
 
-if (editorInputArea) {
-  editorInputArea.style.position = "absolute";
-  editorInputArea.addEventListener("input", (event) => {
-    // Check if the event data is a string
-    if (typeof event.data === "string") {
-      // Trim the event data to remove leading/trailing whitespace
-      const eventData = event.data.trim();
+// if (editorInputArea) {
+//   editorInputArea.style.position = "absolute";
+//   editorInputArea.addEventListener("input", (event) => {
+//     // Check if the event data is a string
+//     if (typeof event.data === "string") {
+//       // Trim the event data to remove leading/trailing whitespace
+//       const eventData = event.data.trim();
 
-      // Check if the trimmed event data is equal to the forward slash character
-      if (eventData === "#") {
-        // Get the range and bounding rectangle of the current selection
-        const selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-          const range = selection.getRangeAt(0);
-          const rect = range.getBoundingClientRect();
+//       // Check if the trimmed event data is equal to the forward slash character
+//       if (eventData === "#") {
+//         // Get the range and bounding rectangle of the current selection
+//         const selection = window.getSelection();
+//         if (selection.rangeCount > 0) {
+//           const range = selection.getRangeAt(0);
+//           const rect = range.getBoundingClientRect();
 
-          contextMenu.style.top = `${rect.top}px`;
-          contextMenu.style.left = `${rect.right}px`;
-          contextMenu.style.display = "block";
-        }
-      }
-    }
-  });
-}
+//           contextMenu.style.top = `${rect.top}px`;
+//           contextMenu.style.left = `${rect.right}px`;
+//           contextMenu.style.display = "block";
+//         }
+//       }
+//     }
+//   });
+// }
 
 const metadataItem = document.createElement("div");
 metadataItem.onclick = (e) => {
   //   e.target;
-  console.log(e.target.childNodes[0]).innerText;
+  console.log(e.target.childNodes[0]).innerHTML;
   // document.getElementById(IDItem).focus();
 };
 
@@ -122,18 +119,14 @@ metaDataSumbitBtn.onclick = () => {
       editor.slice(lastIndex);
   } else {
     newEditorContent = newContent.prop("outerHTML") + editor.slice(lastIndex);
-    // remove all the '#' symbols from the new editor content
-    const cleanedEditorContent = newEditorContent.replace(/#/g, "");
-
-    // set the new content to the editor
-    $("#trumbowyg-demo").trumbowyg("html", cleanedEditorContent);
   }
 
   // remove all the '#' symbols from the new editor content
   const cleanedEditorContent = newEditorContent.replace(/#/g, "");
-
+  
   // set the new content to the editor
   $("#trumbowyg-demo").trumbowyg("html", cleanedEditorContent);
+  console.log(cleanedEditorContent)
 
   //   set states and inputfield to default empty
 
@@ -156,6 +149,12 @@ metaDataSumbitBtn.onclick = () => {
 
   metaDataListContainer.appendChild(metadataItem);
 
+  metaDataList.push({
+    title: metaDataState.title,
+    type: metaDataState.type,
+    id: metaDataState.id,
+  });
+
   //   reset state
   resetState();
 };
@@ -167,7 +166,7 @@ document.addEventListener("keypress", (e) => {
   if (e.shiftKey) {
     if (e.code === "Digit3") {
       contextMenu.style.display = "block";
-      metaDataTitleInputField.focus();
+    //   metaDataTitleInputField.focus();
     }
   }
 });
@@ -183,6 +182,9 @@ class MultonionTF extends HTMLElement {
 
   disconnectedCallback() {
     console.log("disconnectedCallback");
+    metaDataList = metaDataList?.filter(
+      (metaDataList) => metaDataList.id !== this.id
+    );
   }
 }
 
