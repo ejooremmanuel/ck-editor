@@ -71,13 +71,18 @@
   <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/super-build/ckeditor.js"></script>
 
   <body>
-    <!-- The Modal -->
     <div id="myModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
+      <form class="modal-content">
         <span class="close">&times;</span>
-        <p>Mr. Mike.</p>
-      </div>
+        <input aria-label="meta-data-title" />
+        <select id="meta-data-type">
+          <option value="text">Text</option>
+          <option value="date">Date</option>
+          <option value="number">Number</option>
+          <option value="url">Link</option>
+        </select>
+      </form>
+      <button>Submit</button>
     </div>
     <div class="document-editor">
       <div class="document-editor__toolbar"></div>
@@ -90,7 +95,6 @@
     <div class="context-menu">
       <label for="title-input">Title:</label>
       <input type="text" id="title-input" />
-
       <label for="datatype-select">Data Type:</label>
       <select id="datatype-select">
         <option value="text">Text</option>
@@ -98,7 +102,6 @@
         <option value="date">Date</option>
         <option value="boolean">Boolean</option>
       </select>
-
       <button id="submit-button">Submit</button>
     </div>
     <script>

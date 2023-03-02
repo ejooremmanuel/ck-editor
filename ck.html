@@ -6,6 +6,7 @@
 
     <title>WYSIWYG Editor Example</title>
     <!-- Load Trumbowyg CSS -->
+    <link rel="stylesheet" href="./index.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css"
@@ -17,106 +18,52 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-
-    <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-      }
-
-      :root {
-        --tbw-cell-vertical-padding: 4px;
-        --tbw-cell-horizontal-padding: 8px;
-        --tbw-cell-line-height: 1.5em;
-      }
-
-      table {
-        margin-bottom: var(--tbw-cell-line-height);
-      }
-
-      th,
-      td {
-        height: calc(
-          var(--tbw-cell-vertical-padding) * 2 + var(--tbw-cell-line-height)
-        );
-        min-width: calc(var(--tbw-cell-horizontal-padding) * 2);
-        padding: var(--tbw-cell-vertical-padding)
-          var(--tbw-cell-horizontal-padding);
-        border: 1px solid #e7eaec;
-      }
-
-      p:empty:not(:focus)::before {
-        content: attr(data-placeholder);
-      }
-
-      /* / The Modal (background) / */
-      .modal {
-        display: none;
-        /* / Hidden by default / */
-        position: fixed;
-        /* / Stay in place / */
-        z-index: 1;
-        /* / Sit on top / */
-        padding-top: 100px;
-        /* / Location of the box / */
-        left: 0;
-        top: 0;
-        width: 100%;
-        /* / Full width / */
-        height: 100%;
-        /* / Full height / */
-        overflow: auto;
-        /* / Enable scroll if needed / */
-        background-color: rgb(0, 0, 0);
-        /* / Fallback color / */
-        background-color: rgba(0, 0, 0, 0.4);
-        /* / Black w/ opacity / */
-      }
-
-      /* / Modal Content / */
-      .modal-content {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-      }
-
-      /* / The Close Button / */
-      .close {
-        color: #aaaaaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-      }
-
-      .close:hover,
-      .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-      }
-    </style>
   </head>
 
   <body>
     <div id="myModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>here...</p>
-      </div>
-    </div>
-    <!-- Add a textarea for the editor content -->
-    <div
-      id="trumbowyg-demo"
-      contenteditable="true"
-      placeholder="start typing"
-    ></div>
-    <!-- Load jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Load Trumbowyg JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
+      <form class="metadata__form">
+        <div class="metadata__form__header">
+          <p>Meta Data Definition</p>
+          <button class="close__btn">&times;</button>
+        </div>
+        <label for="meta-data-type">Question/Instruction</label>
+        <textarea
+          aria-label="meta-data-title"
+          class="meta__data__title"
+          placeholder="type question or instruction..."
+          rows="5"
+        ></textarea>
+        <label for="meta-data-type"
+          >What Type Of Response are you expecting?</label
+        >
+        <select
+          id="meta-data-type"
+          class="meta__data__type"
+          placeholder="data type"
+        >
+          <option value="text">Text</option>
+          <option value="date">Date</option>
+          <option value="number">Number</option>
+          <option value="url">Link</option>
+        </select>
 
+        <div class="metadata__form__footer">
+          <button class="submit__btn" type="submit">Done</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="">
+      <div
+        id="trumbowyg-demo"
+        contenteditable="true"
+        placeholder="start typing"
+      ></div>
+      <div class="metadata__list"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/allowtagsfrompaste/trumbowyg.allowtagsfrompaste.min.js"
       integrity="sha512-eN5NSu1g2mus/i1826c6tEsNVKsYc+TAs63EVtyFrnEZkdDFYRRCm5OYmuGPe9h3rezLSXJ2nDkT2i/+/TwqJw=="
@@ -129,140 +76,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <script>
-      const modal = document.getElementById("myModal");
-      const span = document.querySelector(".close");
-
-      span.onclick = function () {
-        // get the html content of the editor
-        const editor = $("#trumbowyg-demo").trumbowyg("html");
-        modal.style.display = "none";
-
-        // create a new element and add some content to it
-        const newContent = $(
-          `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p></p></div>`
-        );
-
-        // get the index of the last '#' symbol in the editor content
-        const lastIndex = editor.lastIndexOf("#");
-
-        // add the new content after the last '#' symbol
-        let newEditorContent = "#";
-        if (lastIndex > 0) {
-          newEditorContent =
-            editor.slice(0, lastIndex) +
-            newContent.prop("outerHTML") +
-            editor.slice(lastIndex);
-        } else {
-          newEditorContent =
-            newContent.prop("outerHTML") + editor.slice(lastIndex);
-        }
-
-        // remove all the '#' symbols from the new editor content
-        const cleanedEditorContent = newEditorContent.replace(/#/g, "");
-
-        // set the new content to the editor
-        $("#trumbowyg-demo").trumbowyg("html", cleanedEditorContent);
-      };
-
-      //open modal when shift+3 is pressed
-      document.addEventListener("keypress", (e) => {
-        e.stopPropagation();
-
-        if (e.shiftKey) {
-          if (e.code === "Digit3") {
-            modal.style.display = "block";
-          }
-        }
-      });
-
-      class MultonionTF extends HTMLElement {
-        constructor() {
-          super();
-          // Add initialization code here
-        }
-
-        connectedCallback() {
-          // Add initialization code here
-          console.log("connectedCallback");
-          //   const shadow = this.attachShadow({ mode: "open" });
-          // Add code to run when the element is added to the page
-        }
-
-        disconnectedCallback() {
-          // Add code to run when the element is removed from the page
-          console.log("disconnectedCallback");
-        }
-      }
-
-      customElements.define("multonion-tf", MultonionTF);
-
-      class MultonionDT extends HTMLElement {
-        connectedCallback() {
-          const table = this.querySelector("table");
-          if (table) {
-            const id = Math.random().toString(36).substr(2, 9);
-            this.setAttribute("id", id);
-            console.log(`Element with id '${id}' connected.`);
-
-            console.log("Table thing:", table);
-          } else {
-            console.log("No table found");
-          }
-        }
-        disconnectedCallback() {
-          const id = this.getAttribute("id");
-          console.log(`Element with id '${id}' disconnected.`);
-        }
-      }
-
-      customElements.define("multonion-dt", MultonionDT);
-      //   function appendHelloTag() {
-      //     // Get all elements with class 'trumbowyg-editor'
-      //     // const elements = document.querySelectorAll(".trumbowyg-textarea");
-
-      //     // Loop through each element and append a <hello> tag
-      //     elements.forEach((element) => {
-      //       const helloTag = document.createElement("multonion-tf");
-      //       element.appendChild(helloTag);
-      //     });
-      //   }
-
-      // Initialize the editor
-      $(document).ready(function () {
-        $("#trumbowyg-demo").trumbowyg({
-          autogrow: true,
-          tagClasses: {
-            table: "table",
-          },
-          btns: [
-            ["viewHTML"],
-            ["undo", "redo"], // Only supported in Blink browsers
-            ["formatting"],
-            ["strong", "em", "del"],
-            ["superscript", "subscript"],
-            ["link"],
-            ["insertImage"],
-            ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull"],
-            ["table"],
-            ["tableCellBackgroundColor"],
-            [("unorderedList", "orderedList")],
-            ["horizontalRule"],
-            ["tableBorderColor"]["removeformat"],
-            ["fullscreen"],
-          ],
-        });
-        // appendHelloTag();
-      });
-      //   $(window).on("load", function () {
-      //     const editor = $("#trumbowyg-demo").trumbowyg("html");
-      //     const newContent = $("<p>I am from function</p>");
-      //     $("#trumbowyg-demo").trumbowyg(
-      //       "html",
-      //       editor + newContent.prop("outerHTML")
-      //     );
-      //   });
-    </script>
+    <script src="./index.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/table/trumbowyg.table.min.js"
       integrity="sha512-StAj4jlQaB7+Ch81cZyms1l21bLyLjjI6YB2m2UP0cVv6ZEKs5egZYhLTNBU96SylBJEqBquyaAUfFhVUrX20Q=="
