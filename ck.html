@@ -149,6 +149,14 @@
       //open modal when shift+3 is pressed
       document.addEventListener("keypress", (e) => {
         e.stopPropagation();
+        const tables = document.getElementsByTagName("table");
+        for (let i = 0; i < tables.length; ) {
+          const wrapper = document.createElement("multonion-dt");
+          tables[i].style.backgroundColor = "red";
+          // wrapper.appendChild(tables[i]);
+        }
+
+        console.log(tables);
 
         if (e.shiftKey) {
           if (e.code === "Digit3") {
