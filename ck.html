@@ -134,29 +134,52 @@
       const span = document.querySelector(".close");
 
       // When the user clicks on <span> (x), close the modal
+      // span.onclick = function () {
+      //   modal.style.display = "none";
+      //   const editor = $("#trumbowyg-demo").trumbowyg("html");
+      //   const newContent = $(
+      //     `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p data-placeholder="Insert text here..." contenteditable></p></div>`
+      //   );
+      //   $("#trumbowyg-demo").trumbowyg(
+      //     "html",
+      //     editor + newContent.prop("outerHTML")
+      //   );
+      // };
       span.onclick = function () {
-        modal.style.display = "none";
+        // get the html content of the editor
         const editor = $("#trumbowyg-demo").trumbowyg("html");
+        modal.style.display = "none";
+
+        // create a new element and add some content to it
         const newContent = $(
-          `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p data-placeholder="Insert text here..." contenteditable></p></div>`
+          `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p></p></div>`
         );
-        $("#trumbowyg-demo").trumbowyg(
-          "html",
-          editor + newContent.prop("outerHTML")
-        );
+
+        // get the index of the last '#' symbol in the editor content
+        const lastIndex = editor.lastIndexOf("#");
+
+        // add the new content after the last '#' symbol
+        let newEditorContent = "#";
+        if (lastIndex > 0) {
+          newEditorContent =
+            editor.slice(0, lastIndex) +
+            newContent.prop("outerHTML") +
+            editor.slice(lastIndex);
+        } else {
+          newEditorContent =
+            newContent.prop("outerHTML") + editor.slice(lastIndex);
+        }
+
+        // remove all the '#' symbols from the new editor content
+        const cleanedEditorContent = newEditorContent.replace(/#/g, "");
+
+        // set the new content to the editor
+        $("#trumbowyg-demo").trumbowyg("html", cleanedEditorContent);
       };
 
       //open modal when shift+3 is pressed
       document.addEventListener("keypress", (e) => {
         e.stopPropagation();
-        const tables = document.getElementsByTagName("table");
-        for (let i = 0; i < tables.length; ) {
-          const wrapper = document.createElement("multonion-dt");
-          tables[i].style.backgroundColor = "red";
-          // wrapper.appendChild(tables[i]);
-        }
-
-        console.log(tables);
 
         if (e.shiftKey) {
           if (e.code === "Digit3") {

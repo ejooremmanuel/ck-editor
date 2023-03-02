@@ -1,0 +1,94 @@
+<!-- <html>
+<head>
+  <title>My Page</title>
+  <script>
+    function findMultonionTfElements(tag) {
+      var elements = tag.getElementsByTagName("*");
+      var result = "";
+
+      // Look for multonion-tf tags in child elements
+      Array.from(elements).forEach(function(element) {
+        if (element.tagName.toLowerCase() === "multonion-tf") {
+          result += element.outerHTML;
+        }
+      });
+
+      return result;
+    }
+  </script>
+</head>
+<body>
+  <div id="my-tag">
+    <h1>Title</h1>
+    <multonion-tf data-id="bar" data-type="string" data-score="" data-title="" >Content 1</multonion-tf>
+    <p>Paragraph 1</p>
+    <h1>Title</h1>
+    <h1>Title</h1>
+    <h1>Title</h1>
+    <multonion-tf data-id="bar" data-type="string" data-score="" data-title="" >Content 1</multonion-tf>
+    <p>Paragraph 2</p>
+  </div>
+
+  <script>
+    var myTag = document.getElementById("my-tag");
+    var multonionTfElements = findMultonionTfElements(myTag);
+    console.log(multonionTfElements);
+  </script>
+</body>
+</html> -->
+<html>
+<head>
+  <title>My Page</title>
+  <script>
+    function findMultonionTfElements(tag) {
+        var elements = tag.getElementsByTagName("*");
+      var result = [];
+
+      // Get all child elements of the tag
+      Array.from(elements).forEach(function(element) {
+        // Check if the element is a multonion-tf tag
+        if (element.tagName.toLowerCase() === "multonion-tf") {
+          var data = {};
+          // Get all attributes of the multonion-tf tag
+          Array.from(element.attributes).forEach(function(attr) {
+            // Ignore the name attribute, which is the tag name
+            if (attr.name !== "name") {
+              // Convert the attribute value to a boolean if it is true or false
+              if (attr.value.toLowerCase() === "true") {
+                data[attr.name] = true;
+              } else if (attr.value.toLowerCase() === "false") {
+                data[attr.name] = false;
+              } else {
+                // Otherwise, leave the attribute value as a string
+                data[attr.name] = attr.value;
+              }
+            }
+          });
+          // Add the tag name and attributes to the result
+          result.push({ name: element.tagName.toLowerCase(), data: data });
+        }
+      });
+
+      // Convert the result to a string
+      return JSON.stringify(result);
+    }
+  </script>
+</head>
+<body>
+  <div id="my-tag">
+    <multonion-tf data-id="bar" data-type="string" data-score="" data-title="" >Content 1</multonion-tf>
+    <p>Paragraph 1</p>
+    <h1>Title</h1>
+    <h1>Title</h1>
+    <h1>Title</h1>
+    <multonion-tf data-id="bar" data-type="string" data-score="" data-title="" >Content 1</multonion-tf>
+    <p>Paragraph 2</p>
+  </div>
+
+  <script>
+    var myTag = document.getElementById("my-tag");
+    var multonionTfElements = findMultonionTfElements(myTag);
+    console.log(multonionTfElements);
+  </script>
+</body>
+</html>
