@@ -16,7 +16,7 @@ closeBtn.onclick = function () {
 
   // create a new element and add some content to it
   const newContent = $(
-    `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p></p></div>`
+    `<multonion-tf style='color:red; display:inline;'>I am from function</multonion-tf>`
   );
 
   // get the index of the last '#' symbol in the editor content
@@ -31,6 +31,11 @@ closeBtn.onclick = function () {
       editor.slice(lastIndex);
   } else {
     newEditorContent = newContent.prop("outerHTML") + editor.slice(lastIndex);
+    // remove all the '#' symbols from the new editor content
+    const cleanedEditorContent = newEditorContent.replace(/#/g, "");
+
+    // set the new content to the editor
+    $("#trumbowyg-demo").trumbowyg("html", cleanedEditorContent);
   }
 
   // remove all the '#' symbols from the new editor content
@@ -65,7 +70,7 @@ class MultonionTF extends HTMLElement {
   }
 }
 
-customElements.define("multonion-tf", MultonionTF);
+customElements.define("multonion-tf", MultonionTF, { extends: "span" });
 
 class MultonionDT extends HTMLElement {
   connectedCallback() {
