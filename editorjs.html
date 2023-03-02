@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Context Menu </title>
+
+    <style>
+        /* Add any custom styles here */
+        .context-menu {
+            position: absolute;
+            z-index: 1000;
+            border: 1px solid #ccc;
+            background-color: white;
+            padding: 8px;
+        }
+
+        .context-menu label {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .context-menu select {
+            display: block;
+            margin-bottom: 8px;
+        }
+    </style>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div id="editor"></div>
+
+    <div class="context-menu">
+        <label for="title-input">Title:</label>
+        <input type="text" id="title-input">
+
+        <label for="datatype-select">Data Type:</label>
+        <select id="datatype-select">
+            <option value="text">Text</option>
+            <option value="number">Number</option>
+            <option value="date">Date</option>
+            <option value="boolean">Boolean</option>
+        </select>
+
+        <button id="submit-button">Submit</button>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+
+    <script>
+        const editor = new EditorJS({
+            holder: 'editor',
+
+            onReady: () => {
+                // 1. Get the DOM elements we need for the query
+                const editorNode = document.querySelector('#editor [contenteditable="true"]');
+                const contextMenu = document.querySelector('.context-menu');
+                const titleInput = document.querySelector('#title-input');
+                const datatypeSelect = document.querySelector('#datatype-select');
+                const submitButton = document.querySelector('#submit-button');
+
+                // Hide the context menu by default
+                contextMenu.style.display = 'none';
+
+                // Add an event listener for the "input" event to the editor node
+                editorNode.addEventListener('input', (event) => {
+                    // Check if the event data is a string
+                    if (typeof event.data === 'string') {
+                        // Trim the event data to remove leading/trailing whitespace
+                        const eventData = event.data.trim();
+
+                        // Check if the trimmed event data is equal to the forward slash character
+                        if (eventData === '/') {
+                            // Get the range and bounding rectangle of the current selection
+                            const selection = window.getSelection();
+                            if (selection.rangeCount > 0) {
+                                const range = selection.getRangeAt(0);
+                                const rect = range.getBoundingClientRect();
+
+                                contextMenu.style.top = `${rect.top}px`;
+                                contextMenu.style.left = `${rect.right}px`;
+                                contextMenu.style.display = 'block';
+                            }
+                        }
+                    }
+                });
+
+                // Add an event listener for the "submit" button
+                submitButton.addEventListener('click', () => {
+                    // Get the values from the input fields
+                    const titleValue = titleInput.value.trim();
+                    const datatypeValue = datatypeSelect.value;
+
+                    // Validate the input fields
+                    if (titleValue === '') {
+                        alert('Please enter a title.');
+                        return;
+                    }
+
+                    // Create a new block
+                    const newBlock = {
+                        type: 'context-menu',
+                        data: {
+                            title: titleValue,
+                            datatype: datatypeValue
+                        }
+                    };
+
+                    // Insert the new block at the current selection
+                    editor.saver.save().then((savedData) => {
+                        editor.blocks.insert(newBlock, savedData.blocks.length);
+                    });
+
+                    // Hide the context menu
+                    contextMenu.style.display = 'none';
+
+
+                });
+
+                // add event listener for submit
+                submitButton.addEventListener('click', () => {
+                    // get the values from the input fields
+                    const titleValue = titleInput.value.trim();
+                    const datatypeValue = datatypeSelect.value;
+
+                    // validate the input fields
+                    if (titleValue === '') {
+                        alert('Please enter a title.');
+                        return;
+                    }
+
+                    const blockIndex = editor.blocks.getCurrentBlockIndex();
+                    const currentBlock = editor.blocks.getBlockByIndex(blockIndex);
+                    if (currentBlock) {
+                        console.log(currentBlock);
+                        // const currentText = currentBlock.data.text;
+                        // const slashIndex = currentText.indexOf('/');
+                        // const newText = `${currentText.slice(0, slashIndex)}${titleValue}${currentText.slice(slashIndex + 1)}`;
+                        // editor.blocks.update(blockIndex, { data: { text: newText } });
+                    }
+                    // hide the context menu
+                    contextMenu.style.display = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
