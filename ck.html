@@ -1,240 +1,250 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>WYSIWYG Editor Example</title>
-    <!-- Load Trumbowyg CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/table/ui/trumbowyg.table.min.css"
-      integrity="sha512-qIa+aUEbRGus5acWBO86jFYxOf4l/mfgb30hNmq+bS6rAqQhTRL5NSOmANU/z5RXc3NJ0aCBknZi6YqD0dqoNw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <style>
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-      }
+  <title>WYSIWYG Editor Example</title>
+  <!-- Load Trumbowyg CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/table/ui/trumbowyg.table.min.css"
+    integrity="sha512-qIa+aUEbRGus5acWBO86jFYxOf4l/mfgb30hNmq+bS6rAqQhTRL5NSOmANU/z5RXc3NJ0aCBknZi6YqD0dqoNw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-      :root {
-        --tbw-cell-vertical-padding: 4px;
-        --tbw-cell-horizontal-padding: 8px;
-        --tbw-cell-line-height: 1.5em;
-      }
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-      table {
-        margin-bottom: var(--tbw-cell-line-height);
-      }
+    :root {
+      --tbw-cell-vertical-padding: 4px;
+      --tbw-cell-horizontal-padding: 8px;
+      --tbw-cell-line-height: 1.5em;
+    }
 
-      th,
-      td {
-        height: calc(
-          var(--tbw-cell-vertical-padding) * 2 + var(--tbw-cell-line-height)
-        );
-        min-width: calc(var(--tbw-cell-horizontal-padding) * 2);
-        padding: var(--tbw-cell-vertical-padding)
-          var(--tbw-cell-horizontal-padding);
-        border: 1px solid #e7eaec;
-      }
+    table {
+      margin-bottom: var(--tbw-cell-line-height);
+    }
 
-      p:empty:not(:focus)::before {
-        content: attr(data-placeholder);
-      }
+    th,
+    td {
+      height: calc(var(--tbw-cell-vertical-padding) * 2 + var(--tbw-cell-line-height));
+      min-width: calc(var(--tbw-cell-horizontal-padding) * 2);
+      padding: var(--tbw-cell-vertical-padding) var(--tbw-cell-horizontal-padding);
+      border: 1px solid #e7eaec;
+    }
 
-      /* / The Modal (background) / */
-      .modal {
-        display: none;
-        /* / Hidden by default / */
-        position: fixed;
-        /* / Stay in place / */
-        z-index: 1;
-        /* / Sit on top / */
-        padding-top: 100px;
-        /* / Location of the box / */
-        left: 0;
-        top: 0;
-        width: 100%;
-        /* / Full width / */
-        height: 100%;
-        /* / Full height / */
-        overflow: auto;
-        /* / Enable scroll if needed / */
-        background-color: rgb(0, 0, 0);
-        /* / Fallback color / */
-        background-color: rgba(0, 0, 0, 0.4);
-        /* / Black w/ opacity / */
-      }
+    p:empty:not(:focus)::before {
+      content: attr(data-placeholder);
+    }
 
-      /* / Modal Content / */
-      .modal-content {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-      }
+    /* / The Modal (background) / */
+    .modal {
+      display: none;
+      /* / Hidden by default / */
+      position: fixed;
+      /* / Stay in place / */
+      z-index: 1;
+      /* / Sit on top / */
+      padding-top: 100px;
+      /* / Location of the box / */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* / Full width / */
+      height: 100%;
+      /* / Full height / */
+      overflow: auto;
+      /* / Enable scroll if needed / */
+      background-color: rgb(0, 0, 0);
+      /* / Fallback color / */
+      background-color: rgba(0, 0, 0, 0.4);
+      /* / Black w/ opacity / */
+    }
 
-      /* / The Close Button / */
-      .close {
-        color: #aaaaaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-      }
+    /* / Modal Content / */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
 
-      .close:hover,
-      .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-      }
-    </style>
-  </head>
+    /* / The Close Button / */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
 
-  <body>
-    <div id="myModal" class="modal">
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>here...</p>
-      </div>
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>here...</p>
     </div>
-    <!-- Add a textarea for the editor content -->
-    <div
-      id="trumbowyg-demo"
-      contenteditable="true"
-      placeholder="start typing"
-    ></div>
-    <!-- Load jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Load Trumbowyg JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
+  </div>
+  <!-- Add a textarea for the editor content -->
+  <div id="trumbowyg-demo" contenteditable="true" placeholder="start typing"></div>
+  <!-- Load jQuery library -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Load Trumbowyg JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>
 
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/allowtagsfrompaste/trumbowyg.allowtagsfrompaste.min.js"
-      integrity="sha512-eN5NSu1g2mus/i1826c6tEsNVKsYc+TAs63EVtyFrnEZkdDFYRRCm5OYmuGPe9h3rezLSXJ2nDkT2i/+/TwqJw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/cleanpaste/trumbowyg.cleanpaste.min.js"
-      integrity="sha512-UInqT8f+K1tkck6llPo0HDxlT/Zxv8t4OGeCuVfsIlXLrnP1ZKDGb+tBsBPMqDW15OcmV8NDfQe9+EaAG4aXeg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script>
-      const modal = document.getElementById("myModal");
-      const span = document.querySelector(".close");
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/allowtagsfrompaste/trumbowyg.allowtagsfrompaste.min.js"
+    integrity="sha512-eN5NSu1g2mus/i1826c6tEsNVKsYc+TAs63EVtyFrnEZkdDFYRRCm5OYmuGPe9h3rezLSXJ2nDkT2i/+/TwqJw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/cleanpaste/trumbowyg.cleanpaste.min.js"
+    integrity="sha512-UInqT8f+K1tkck6llPo0HDxlT/Zxv8t4OGeCuVfsIlXLrnP1ZKDGb+tBsBPMqDW15OcmV8NDfQe9+EaAG4aXeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    const modal = document.getElementById("myModal");
+    const span = document.querySelector(".close");
 
-      // When the user clicks on <span> (x), close the modal
-      span.onclick = function () {
-        modal.style.display = "none";
-        const editor = $("#trumbowyg-demo").trumbowyg("html");
-        const newContent = $(
-          `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p data-placeholder="Insert text here..." contenteditable></p></div>`
-        );
-        $("#trumbowyg-demo").trumbowyg(
-          "html",
-          editor + newContent.prop("outerHTML")
-        );
-      };
+    // When the user clicks on <span> (x), close the modal
+    // span.onclick = function () {
+    //   modal.style.display = "none";
+    //   const editor = $("#trumbowyg-demo").trumbowyg("html");
+    //   const newContent = $(
+    //     `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p data-placeholder="Insert text here..." contenteditable></p></div>`
+    //   );
+    //   $("#trumbowyg-demo").trumbowyg(
+    //     "html",
+    //     editor + newContent.prop("outerHTML")
+    //   );
+    // };
+    span.onclick = function () {
+          // get the html content of the editor
+      const editor = $("#trumbowyg-demo").trumbowyg("html");
 
-      //open modal when shift+3 is pressed
-      document.addEventListener("keypress", (e) => {
-        e.stopPropagation();
+      // create a new element and add some content to it
+      const newContent = $(
+        `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p></p></div>`
+      );
 
-        if (e.shiftKey) {
-          if (e.code === "Digit3") {
-            modal.style.display = "block";
-          }
-        }
-      });
+      // get the index of the last '#' symbol in the editor content
+      const lastIndex = editor.lastIndexOf("#"); 
 
-      class MultonionTF extends HTMLElement {
-        constructor() {
-          super();
-          // Add initialization code here
-        }
-
-        connectedCallback() {
-          // Add initialization code here
-          console.log("connectedCallback");
-          //   const shadow = this.attachShadow({ mode: "open" });
-          // Add code to run when the element is added to the page
-        }
-
-        disconnectedCallback() {
-          // Add code to run when the element is removed from the page
-          console.log("disconnectedCallback");
-        }
+      // add the new content after the last '#' symbol
+      let newEditorContent = "#";
+      if (lastIndex > 0) {
+        newEditorContent = editor.slice(0, lastIndex) + newContent.prop("outerHTML") + editor.slice(lastIndex);
+      } else {
+        newEditorContent = newContent.prop("outerHTML") + editor.slice(lastIndex);
       }
 
-      customElements.define("multonion-tf", MultonionTF);
+      // remove all the '#' symbols from the new editor content
+      const cleanedEditorContent = newEditorContent.replace(/#/g, ''); 
 
-      class MultonionDT extends HTMLElement {
-        connectedCallback() {
-          const table = this.querySelector("table");
-          if (table) {
-            const id = Math.random().toString(36).substr(2, 9);
-            this.setAttribute("id", id);
-            console.log(`Element with id '${id}' connected.`);
+      // set the new content to the editor
+      $("#trumbowyg-demo").trumbowyg("html", cleanedEditorContent);
+    };
 
-            console.log("Table thing:", table);
-          } else {
-            console.log("No table found");
-          }
-        }
-        disconnectedCallback() {
-          const id = this.getAttribute("id");
-          console.log(`Element with id '${id}' disconnected.`);
+
+    //open modal when shift+3 is pressed
+    document.addEventListener("keypress", (e) => {
+      e.stopPropagation();
+
+      if (e.shiftKey) {
+        if (e.code === "Digit3") {
+          modal.style.display = "block";
         }
       }
+    });
 
-      customElements.define("multonion-dt", MultonionDT);
-      //   function appendHelloTag() {
-      //     // Get all elements with class 'trumbowyg-editor'
-      //     // const elements = document.querySelectorAll(".trumbowyg-textarea");
+    class MultonionTF extends HTMLElement {
+      constructor() {
+        super();
+        // Add initialization code here
+      }
 
-      //     // Loop through each element and append a <hello> tag
-      //     elements.forEach((element) => {
-      //       const helloTag = document.createElement("multonion-tf");
-      //       element.appendChild(helloTag);
-      //     });
-      //   }
+      connectedCallback() {
+        // Add initialization code here
+        console.log("connectedCallback");
+        //   const shadow = this.attachShadow({ mode: "open" });
+        // Add code to run when the element is added to the page
+      }
 
-      // Initialize the editor
-      $(document).ready(function () {
-        $("#trumbowyg-demo").trumbowyg({
-          autogrow: true,
-          tagClasses: {
-            table: "table",
-          },
-          btns: [
-            ["viewHTML"],
-            ["undo", "redo"], // Only supported in Blink browsers
-            ["formatting"],
-            ["strong", "em", "del"],
-            ["superscript", "subscript"],
-            ["link"],
-            ["insertImage"],
-            ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull"],
-            ["table"],
-            ["tableCellBackgroundColor"],
-            [("unorderedList", "orderedList")],
-            ["horizontalRule"],
-            ["tableBorderColor"]["removeformat"],
-            ["fullscreen"],
-          ],
-        });
-        // appendHelloTag();
+      disconnectedCallback() {
+        // Add code to run when the element is removed from the page
+        console.log("disconnectedCallback");
+      }
+    }
+
+    customElements.define("multonion-tf", MultonionTF);
+
+    class MultonionDT extends HTMLElement {
+      connectedCallback() {
+        const table = this.querySelector("table");
+        if (table) {
+          const id = Math.random().toString(36).substr(2, 9);
+          this.setAttribute("id", id);
+          console.log(`Element with id '${id}' connected.`);
+
+          console.log("Table thing:", table);
+        } else {
+          console.log("No table found");
+        }
+      }
+      disconnectedCallback() {
+        const id = this.getAttribute("id");
+        console.log(`Element with id '${id}' disconnected.`);
+      }
+    }
+
+    customElements.define("multonion-dt", MultonionDT);
+    //   function appendHelloTag() {
+    //     // Get all elements with class 'trumbowyg-editor'
+    //     // const elements = document.querySelectorAll(".trumbowyg-textarea");
+
+    //     // Loop through each element and append a <hello> tag
+    //     elements.forEach((element) => {
+    //       const helloTag = document.createElement("multonion-tf");
+    //       element.appendChild(helloTag);
+    //     });
+    //   }
+
+    // Initialize the editor
+    $(document).ready(function () {
+      $("#trumbowyg-demo").trumbowyg({
+        autogrow: true,
+        tagClasses: {
+          table: "table",
+        },
+        btns: [
+          ["viewHTML"],
+          ["undo", "redo"], // Only supported in Blink browsers
+          ["formatting"],
+          ["strong", "em", "del"],
+          ["superscript", "subscript"],
+          ["link"],
+          ["insertImage"],
+          ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull"],
+          ["table"],
+          ["tableCellBackgroundColor"],
+          [("unorderedList", "orderedList")],
+          ["horizontalRule"],
+          ["tableBorderColor"]["removeformat"],
+          ["fullscreen"],
+        ],
       });
+      // appendHelloTag();
+    });
       //   $(window).on("load", function () {
       //     const editor = $("#trumbowyg-demo").trumbowyg("html");
       //     const newContent = $("<p>I am from function</p>");
@@ -243,14 +253,12 @@
       //       editor + newContent.prop("outerHTML")
       //     );
       //   });
-    </script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/table/trumbowyg.table.min.js"
-      integrity="sha512-StAj4jlQaB7+Ch81cZyms1l21bLyLjjI6YB2m2UP0cVv6ZEKs5egZYhLTNBU96SylBJEqBquyaAUfFhVUrX20Q=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script src="./table-plugin.js"></script>
-    ;
-  </body>
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.27.3/plugins/table/trumbowyg.table.min.js"
+    integrity="sha512-StAj4jlQaB7+Ch81cZyms1l21bLyLjjI6YB2m2UP0cVv6ZEKs5egZYhLTNBU96SylBJEqBquyaAUfFhVUrX20Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./table-plugin.js"></script>
+  ;
+</body>
+
 </html>
