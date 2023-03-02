@@ -21,15 +21,16 @@
   </head>
 
   <body>
-    <div id="myModal" class="modal">
+    <div id="contextMenu" class="context-menu">
       <form class="metadata__form">
         <div class="metadata__form__header">
           <p>Meta Data Definition</p>
           <button class="close__btn">&times;</button>
         </div>
-        <label for="meta-data-type">Question/Instruction</label>
+        <label for="meta__data__title">Question/Instruction</label>
         <textarea
           aria-label="meta-data-title"
+          id="meta__data__title"
           class="meta__data__title"
           placeholder="type question or instruction..."
           rows="5"
@@ -37,12 +38,8 @@
         <label for="meta-data-type"
           >What Type Of Response are you expecting?</label
         >
-        <select
-          id="meta-data-type"
-          class="meta__data__type"
-          placeholder="data type"
-        >
-          <option value="text">Text</option>
+        <select id="meta-data-type" class="meta__data__type">
+          <option value="text" selected>Text</option>
           <option value="date">Date</option>
           <option value="number">Number</option>
           <option value="url">Link</option>
@@ -54,13 +51,15 @@
       </form>
     </div>
 
-    <div class="">
+    <div class="document__builder__wrapper">
       <div
         id="trumbowyg-demo"
         contenteditable="true"
         placeholder="start typing"
       ></div>
-      <div class="metadata__list"></div>
+      <div class="metadata__list">
+        <p>Meta Data</p>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js"></script>

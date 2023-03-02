@@ -47,19 +47,18 @@ p:empty:not(:focus)::before {
   height: 25px;
 }
 
-.modal {
+.context-menu {
   display: none;
-  position: fixed;
-  z-index: 1;
+  position: absolute;
+  z-index: 1000;
   padding: 1rem;
-  top: 20%;
-  left: 50%;
   width: 300px;
   overflow: auto;
   box-shadow: 2px 2px 37px 16px rgba(0, 0, 0, 0.13);
   -webkit-box-shadow: 2px 2px 37px 16px rgba(0, 0, 0, 0.156);
   -moz-box-shadow: 2px 2px 37px 16px rgba(0, 0, 0, 0.051);
   border-radius: 0.5rem;
+  background-color: #fff;
 }
 
 .metadata__form {
@@ -128,4 +127,37 @@ p:empty:not(:focus)::before {
 label {
   font-size: 11px;
   color: rgb(155, 153, 153);
+}
+
+multonion-tf {
+  color: rgb(143, 0, 200);
+  background-color: rgba(143, 0, 200, 0.19);
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.5rem;
+}
+
+.document__builder__wrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.metadata__list {
+  min-width: 20vw;
+  height: 90vh;
+  position: static;
+  border: 1px solid #ddd;
+  min-height: 300px;
+}
+
+.metadata__list > p {
+    font-size: 1.5rem;
+    font-weight: 400;
+  text-align: center;
+  color: rgb(203, 3, 187);
+}
+
+.data__item{
+    font-size:12px;
+    font-weight: 400;
+    color: rgb(45, 45, 45);
 }
