@@ -18,11 +18,11 @@ const metaDataList = {
 };
 
 metaDataTitleInputField.value = "";
+
 metaDataTypeInputField.value = "";
 
 metaDataForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log(metaDataState);
 });
 
 if (metaDataTitleInputField.value === "") {
@@ -48,7 +48,6 @@ metaDataTypeInputField.addEventListener("change", (e) => {
 if (editorInputArea) {
   editorInputArea.style.position = "absolute";
   editorInputArea.addEventListener("input", (event) => {
-    console.log("eee");
     // Check if the event data is a string
     if (typeof event.data === "string") {
       // Trim the event data to remove leading/trailing whitespace
@@ -71,14 +70,44 @@ if (editorInputArea) {
   });
 }
 
+const metadataItem = document.createElement("div");
+metadataItem.onclick = (e) => {
+  //   e.target;
+  console.log(e.target.childNodes[0]).innerText;
+  // document.getElementById(IDItem).focus();
+};
+
+// initialize state
+metaDataState.title = "";
+metaDataState.type = "";
+
+metaDataTitleInputField.value = "";
+metaDataTypeInputField.value = "";
+
+const resetState = () => {
+  metaDataState.title = "";
+  metaDataState.type = "";
+
+  metaDataTitleInputField.value = "";
+  metaDataTypeInputField.value = "";
+};
+// handle close
+closeBtn.onclick = () => {
+  contextMenu.style.display = "none";
+  resetState();
+};
+// handle submit
 metaDataSumbitBtn.onclick = () => {
+  // generate ID
+  const id = Math.random().toString(36).substr(2, 9);
+
   // get the html content of the editor
   const editor = $("#trumbowyg-demo").trumbowyg("html");
   contextMenu.style.display = "none";
 
   // create a new element and add some content to it
   const newContent = $(
-    `<multonion-tf contenteditable="false">${metaDataState.title}</multonion-tf>`
+    `<multonion-tf contenteditable="false" id="${id}">${metaDataState.title}</multonion-tf>`
   );
 
   // get the index of the last '#' symbol in the editor content
@@ -108,17 +137,27 @@ metaDataSumbitBtn.onclick = () => {
 
   //   set states and inputfield to default empty
 
-  const dataItem = document.createElement("p");
-  dataItem.innerHTML = metaDataState.title;
-  dataItem.className = "data__item";
-  //   const dataItem = document.createElement('p')
+  const IDItem = document.createElement("p");
+  IDItem.innerHTML = `ID: ${id}`;
+  IDItem.className = "data__item__id";
 
-  metaDataListContainer.appendChild(dataItem);
-  metaDataState.title = "";
-  metaDataState.type = "";
+  const titleItem = document.createElement("p");
+  titleItem.innerHTML = metaDataState.title;
+  titleItem.className = "data__item__title";
 
-  metaDataTitleInputField.value = "";
-  metaDataTypeInputField.value = "";
+  const typeItem = document.createElement("p");
+  typeItem.innerHTML = `Type:${metaDataState.type}`;
+  typeItem.className = "data__item__type";
+
+  metadataItem.appendChild(IDItem);
+  metadataItem.appendChild(titleItem);
+  metadataItem.appendChild(typeItem);
+  metadataItem.className = "data__item";
+
+  metaDataListContainer.appendChild(metadataItem);
+
+  //   reset state
+  resetState();
 };
 
 //open modal when shift+3 is pressed
@@ -128,6 +167,7 @@ document.addEventListener("keypress", (e) => {
   if (e.shiftKey) {
     if (e.code === "Digit3") {
       contextMenu.style.display = "block";
+      metaDataTitleInputField.focus();
     }
   }
 });
@@ -201,7 +241,6 @@ $(document).ready(function () {
             const parentNode = document.createElement("multonion-dt");
             parentNode.appendChild(elm);
             e.target.appendChild(parentNode);
-            console.log(e.target.childNodes);
           }
         });
       }

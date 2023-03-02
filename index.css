@@ -135,6 +135,13 @@ multonion-tf {
   padding: 0.2rem 0.6rem;
   border-radius: 0.5rem;
 }
+multonion-tf:hover,
+multonion-tf:focus {
+  color: rgb(0, 80, 200);
+  background-color: rgba(0, 80, 200, 0.125);
+  transition: 0.4s;
+  cursor: pointer;
+}
 
 .document__builder__wrapper {
   display: flex;
@@ -148,16 +155,54 @@ multonion-tf {
   border: 1px solid #ddd;
   min-height: 300px;
 }
-
-.metadata__list > p {
-    font-size: 1.5rem;
-    font-weight: 400;
+.metadata__list__header {
+  border-bottom: 1px solid #ccc;
+  background-color: rgb(61, 50, 50);
+  padding: 1rem;
+}
+.metadata__list__header > p {
+  font-size: 1.5rem;
+  font-weight: 400;
   text-align: center;
-  color: rgb(203, 3, 187);
+  color: #fff;
+  margin: 0;
 }
 
-.data__item{
-    font-size:12px;
-    font-weight: 400;
-    color: rgb(45, 45, 45);
+.data__item {
+  margin: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 0.8rem;
+  background-color: rgb(255, 255, 255);
 }
+.data__item:hover {
+  background-color: rgba(162, 162, 162, 0.346);
+}
+.data__item > p {
+  margin: 0;
+}
+
+.data__item__id {
+  font-size: 11px;
+  color: rgb(175, 175, 175);
+  margin: 0;
+}
+
+.data__item__title {
+  font-size: 20px;
+  font-weight: bolder;
+}
+.data__item__type {
+  color: rgb(143, 0, 200);
+  background-color: rgba(143, 0, 200, 0.19);
+  padding: 0.2rem;
+  width: fit-content;
+}
+/* .data__item__id {
+  font-size: 10px;
+  color: #ccc;
+  margin: 0;
+} */
