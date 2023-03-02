@@ -133,18 +133,6 @@
       const modal = document.getElementById("myModal");
       const span = document.querySelector(".close");
 
-      // When the user clicks on <span> (x), close the modal
-      // span.onclick = function () {
-      //   modal.style.display = "none";
-      //   const editor = $("#trumbowyg-demo").trumbowyg("html");
-      //   const newContent = $(
-      //     `<div><multonion-tf style='color:red;'>I am from function</multonion-tf><p data-placeholder="Insert text here..." contenteditable></p></div>`
-      //   );
-      //   $("#trumbowyg-demo").trumbowyg(
-      //     "html",
-      //     editor + newContent.prop("outerHTML")
-      //   );
-      // };
       span.onclick = function () {
         // get the html content of the editor
         const editor = $("#trumbowyg-demo").trumbowyg("html");
