@@ -6,6 +6,7 @@ body {
   --tbw-cell-vertical-padding: 4px;
   --tbw-cell-horizontal-padding: 8px;
   --tbw-cell-line-height: 1.5em;
+  scroll-behavior: smooth;
 }
 
 table {
@@ -49,12 +50,12 @@ p:empty:not(:focus)::before {
 
 .context-menu {
   display: none;
-  position: absolute;
+  position: fixed;
   z-index: 1000;
   padding: 1rem;
   width: 300px;
 
-  top: 50%;
+  top: 20%;
   left: 50%;
   overflow: auto;
   box-shadow: 2px 2px 37px 16px rgba(0, 0, 0, 0.13);
@@ -151,12 +152,14 @@ multonion-tf:focus {
   gap: 1rem;
 }
 
-.metadata__list {
+.metadata__list__wrapper {
   min-width: 20vw;
   height: 90vh;
   position: static;
   border: 1px solid #ddd;
   min-height: 300px;
+  position: sticky;
+  top: 0;
 }
 .metadata__list__header {
   border-bottom: 1px solid #ccc;
@@ -180,6 +183,9 @@ multonion-tf:focus {
   border: 1px solid #ccc;
   border-radius: 0.8rem;
   background-color: rgb(255, 255, 255);
+  text-decoration: none;
+
+  overflow: hidden;
 }
 .data__item:hover {
   background-color: rgba(162, 162, 162, 0.346);
@@ -196,16 +202,21 @@ multonion-tf:focus {
 
 .data__item__title {
   font-size: 20px;
-  font-weight: bolder;
+  /* font-weight: bolder; */
+  text-decoration: none;
+  color: #333;
 }
 .data__item__type {
-  color: rgb(143, 0, 200);
-  background-color: rgba(143, 0, 200, 0.19);
-  padding: 0.2rem;
+  color: rgba(143, 0, 200, 0.421);
+  background-color: rgba(143, 0, 200, 0.126);
+  padding: 0.2rem 0.5rem;
   width: fit-content;
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
 }
-/* .data__item__id {
-  font-size: 10px;
-  color: #ccc;
-  margin: 0;
-} */
+
+.poniter__span {
+  background-color: rgba(204, 204, 204, 0.109);
+  padding: 1rem;
+  color: rgb(166, 166, 166);
+}

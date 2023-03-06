@@ -42,36 +42,41 @@ metaDataTypeInputField.addEventListener("change", (e) => {
   metaDataState.type = e.target.value;
 });
 
-// if (editorInputArea) {
-//   editorInputArea.style.position = "absolute";
-//   editorInputArea.addEventListener("input", (event) => {
-//     // Check if the event data is a string
-//     if (typeof event.data === "string") {
-//       // Trim the event data to remove leading/trailing whitespace
-//       const eventData = event.data.trim();
+// append child to metadata list container
+const addMetadata = () => {
+  if (metaDataListContainer.hasChildNodes()) {
+    metaDataListContainer.innerHTML = "";
+  }
 
-//       // Check if the trimmed event data is equal to the forward slash character
-//       if (eventData === "#") {
-//         // Get the range and bounding rectangle of the current selection
-//         const selection = window.getSelection();
-//         if (selection.rangeCount > 0) {
-//           const range = selection.getRangeAt(0);
-//           const rect = range.getBoundingClientRect();
+  console.log(metaDataList);
 
-//           contextMenu.style.top = `${rect.top}px`;
-//           contextMenu.style.left = `${rect.right}px`;
-//           contextMenu.style.display = "block";
-//         }
-//       }
-//     }
-//   });
-// }
+  metaDataList.map((item) => {
+    const IDItem = document.createElement("p");
+    IDItem.innerHTML = `ID: ${item.id}`;
+    IDItem.className = "data__item__id";
 
-const metadataItem = document.createElement("div");
-metadataItem.onclick = (e) => {
-  //   e.target;
-  console.log(e.target.childNodes[0]).innerHTML;
-  // document.getElementById(IDItem).focus();
+    const titleItem = document.createElement("p");
+    titleItem.innerHTML = item.title;
+    titleItem.className = "data__item__title";
+
+    const typeItem = document.createElement("p");
+    typeItem.innerHTML = `Type:${item.type}`;
+    typeItem.className = "data__item__type";
+
+    const metadataItem = document.createElement("a");
+    metadataItem.href = `#${item.id}`;
+    // metadataItem.onclick = (e) => {
+    //   const mtItem = document.getElementById(item.id);
+    //   href = item.id;
+    //   console.log(mtItem);
+    // };
+    metadataItem.appendChild(IDItem);
+    metadataItem.appendChild(titleItem);
+    metadataItem.appendChild(typeItem);
+    metadataItem.className = "data__item";
+
+    metaDataListContainer.appendChild(metadataItem);
+  });
 };
 
 // initialize state
@@ -92,7 +97,16 @@ const resetState = () => {
 closeBtn.onclick = () => {
   contextMenu.style.display = "none";
   resetState();
+  document.querySelectorAll(".poniter__span").forEach((el) => el.remove());
+  // console.log( $("#trumbowyg-demo").trumbowyg("html").replace(//, ""))
 };
+
+// listen for caret point
+document.getElementById("trumbowyg-demo").addEventListener("input", (e) => {
+  console.log(e);
+  console.log(getCaretPosition());
+});
+
 // handle submit
 metaDataSumbitBtn.onclick = () => {
   // generate ID
@@ -104,11 +118,11 @@ metaDataSumbitBtn.onclick = () => {
 
   // create a new element and add some content to it
   const newContent = $(
-    `<multonion-tf contenteditable="false" id="${id}">${metaDataState.title}</multonion-tf>`
+    `<multonion-tf contenteditable="false" id="${id}" title="${metaDataState.title}" reponseType="${metaDataState.type}">${metaDataState.title}</multonion-tf>`
   );
 
   // get the index of the last '#' symbol in the editor content
-  const lastIndex = editor.lastIndexOf("#");
+  const lastIndex = editor.lastIndexOf(`<span class="poniter__span" contenteditable="false">[entering Value...]</span>`);
 
   // add the new content after the last '#' symbol
   let newEditorContent = "#";
@@ -122,54 +136,72 @@ metaDataSumbitBtn.onclick = () => {
   }
 
   // remove all the '#' symbols from the new editor content
-  const cleanedEditorContent = newEditorContent.replace(/#/g, "");
-  
+  const cleanedEditorContent = newEditorContent.replace(`<span class="poniter__span" contenteditable="false">[entering Value...]</span>`, "");
+
   // set the new content to the editor
   $("#trumbowyg-demo").trumbowyg("html", cleanedEditorContent);
-  console.log(cleanedEditorContent)
+
+  //   console.log(cleanedEditorContent);
 
   //   set states and inputfield to default empty
 
-  const IDItem = document.createElement("p");
-  IDItem.innerHTML = `ID: ${id}`;
-  IDItem.className = "data__item__id";
-
-  const titleItem = document.createElement("p");
-  titleItem.innerHTML = metaDataState.title;
-  titleItem.className = "data__item__title";
-
-  const typeItem = document.createElement("p");
-  typeItem.innerHTML = `Type:${metaDataState.type}`;
-  typeItem.className = "data__item__type";
-
-  metadataItem.appendChild(IDItem);
-  metadataItem.appendChild(titleItem);
-  metadataItem.appendChild(typeItem);
-  metadataItem.className = "data__item";
-
-  metaDataListContainer.appendChild(metadataItem);
-
-  metaDataList.push({
-    title: metaDataState.title,
-    type: metaDataState.type,
-    id: metaDataState.id,
-  });
-
+  //   metaDataList.push({
+  //     title: metaDataState.title,
+  //     type: metaDataState.type,
+  //     id: id,
+  //   });
+  // metaDataList = [
+  //   ...metaDataList,
+  //   {
+  //     title: metaDataState.title,
+  //     type: metaDataState.type,
+  //     id: id,
+  //   },
+  // ];
+  console.log(metaDataList);
+  addMetadata();
   //   reset state
   resetState();
+  // document.querySelectorAll(".poniter__span").forEach((el) => el.remove());
 };
 
-//open modal when shift+3 is pressed
-document.addEventListener("keypress", (e) => {
-  e.stopPropagation();
-
-  if (e.shiftKey) {
-    if (e.code === "Digit3") {
-      contextMenu.style.display = "block";
-    //   metaDataTitleInputField.focus();
+document.getElementById("trumbowyg-demo").addEventListener("input", (e) => {
+  // console.log(e);
+  // console.log(getCaretPosition());
+  const editor = $("#trumbowyg-demo").trumbowyg("html");
+  const newContent = $(
+    `<span class="poniter__span" contenteditable="false">[entering Value...]</span>`
+  );
+  if (e.data === "#") {
+    const position = getCaretPosition() + 2;
+    if (getCaretPosition() > 0) {
+      newEditorContent =
+        editor.slice(0, position) +
+        newContent.prop("outerHTML") +
+        editor.slice(position);
+    } else {
+      newEditorContent = newContent.prop("outerHTML") + editor.slice(position);
     }
+    $("#trumbowyg-demo").trumbowyg("html", newEditorContent);
+    pointerSpan = document.querySelector(".poniter__span");
+    contextMenu.style.display = "block";
+    contextMenu.style.top = `${pointerSpan.offsetTop + 80}px`;
+    contextMenu.style.left = `${pointerSpan.offsetLeft + 10}px`;
+    console.log("poniter__span", pointerSpan);
   }
 });
+
+//open modal when shift+3 is pressed
+// document.addEventListener("keypress", (e) => {
+//   e.stopPropagation();
+
+//   if (e.shiftKey) {
+//     if (e.code === "Digit3") {
+//       contextMenu.style.display = "block";
+//       //   metaDataTitleInputField.focus();
+//     }
+//   }
+// });
 
 class MultonionTF extends HTMLElement {
   constructor() {
@@ -177,14 +209,28 @@ class MultonionTF extends HTMLElement {
   }
 
   connectedCallback() {
-    console.log("connectedCallback");
+    // console.log("connectedCallback");
+    console.log(this.attributes.reponseType);
+
+    metaDataList = [
+      {
+        title: this.title,
+        type: this.attributes.reponseType.value,
+        id: this.id,
+      },
+      ...metaDataList,
+    ];
   }
 
   disconnectedCallback() {
-    console.log("disconnectedCallback");
+    console.log("disconnectedCallback", this.id);
     metaDataList = metaDataList?.filter(
       (metaDataList) => metaDataList.id !== this.id
     );
+
+    // metaDataList = [];
+    console.log("metaDataList", metaDataList);
+    addMetadata();
   }
 }
 
@@ -210,6 +256,26 @@ class MultonionDT extends HTMLElement {
 }
 
 customElements.define("multonion-dt", MultonionDT);
+
+function getCaretPosition() {
+  if (window.getSelection && window.getSelection().getRangeAt) {
+    var range = window.getSelection().getRangeAt(0);
+    var selectedObj = window.getSelection();
+    var rangeCount = 0;
+    var childNodes = selectedObj.anchorNode.parentNode.childNodes;
+    for (var i = 0; i < childNodes.length; i++) {
+      if (childNodes[i] == selectedObj.anchorNode) {
+        break;
+      }
+      if (childNodes[i].outerHTML) rangeCount += childNodes[i].outerHTML.length;
+      else if (childNodes[i].nodeType == 3) {
+        rangeCount += childNodes[i].textContent.length;
+      }
+    }
+    return range.startOffset + rangeCount;
+  }
+  return -1;
+}
 
 // Initialize the editor
 $(document).ready(function () {
@@ -237,6 +303,8 @@ $(document).ready(function () {
       ],
     })
     .on("tbwchange", function (e) {
+      // console.log(e.clientX);
+      // console.log(document.caretPositionFromPoint());
       if (e.target.childNodes) {
         [].forEach.call(e.target.childNodes, function (elm) {
           if (elm.nodeName == "TABLE") {
@@ -247,4 +315,5 @@ $(document).ready(function () {
         });
       }
     });
+  // .on("mousedown mouseup keydown keyup", update);
 });
